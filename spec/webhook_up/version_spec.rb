@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe WebhookUp::VERSION do
+describe 'WebhookUp::VERSION' do
   subject { WebhookUp::VERSION }
 
   it 'exists' do
