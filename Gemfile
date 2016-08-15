@@ -4,7 +4,7 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in webhook_up.gemspec
 gemspec
 
-group :development do
+group :local do
   # Guard
   gem "guard-rspec", require: false
   gem "terminal-notifier-guard", require: false # OS X
@@ -12,3 +12,6 @@ group :development do
   # Quality
   gem "rubocop", ">= 0.30.1", require: false
 end
+
+# Quality
+gem "rubocop", ">= 0.30", require: false

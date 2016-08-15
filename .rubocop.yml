@@ -2,7 +2,6 @@ AllCops:
   Exclude:
     - 'bin/*'
     - 'vendor/**/*'
-    - 'db/schema.rb'
   TargetRubyVersion: 2.3
 
 Metrics/AbcSize:
@@ -17,8 +16,6 @@ Metrics/LineLength:
   Max: 100 # default: 80
 
 Metrics/MethodLength:
-  Exclude:
-    - "db/migrate/*"
   Max: 12 # default: 10
 
 Metrics/PerceivedComplexity:
