@@ -1,7 +1,8 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+# frozen_string_literal: true
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'webhook_up/version'
+require "webhook_up/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "webhook_up"
@@ -9,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Maxime Garcia"]
   spec.email         = ["maxime.garcia@gmail.com"]
 
-  spec.summary       = %q{Client for calling webhooks}
-  spec.description   = %q{Client for calling webhooks}
+  spec.summary       = "Client for calling webhooks"
+  spec.description   = "Client for calling webhooks"
   spec.homepage      = "https://github.com/maximeg/webhook_up"
   spec.license       = "MIT"
 
