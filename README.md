@@ -1,5 +1,7 @@
 # WebhookUp
 
+[![Gem Version](https://badge.fury.io/rb/webhook_up.svg)](https://badge.fury.io/rb/webhook_up) [![Build Status](https://travis-ci.org/maximeg/webhook_up.svg?branch=master)](https://travis-ci.org/maximeg/webhook_up)
+
 WebhookUp is a client for calling webhooks.
 
 ## Installation
