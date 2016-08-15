@@ -5,4 +5,7 @@ rvm:
   - 2.2.5
   - 2.3.1
 before_install: gem install bundler -v 1.12.3
-bundler_args: --without development
+bundler_args: --without local
+script:
+  - 'bundle exec rubocop'
+  - 'bundle exec rspec'
