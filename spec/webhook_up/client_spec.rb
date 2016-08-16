@@ -25,8 +25,10 @@ describe WebhookUp::Client do
       foo: "bar",
     }
 
-    subject.publish("my_event", payload: payload)
+    response = subject.publish("my_event", payload: payload)
     expect(stub).to have_been_requested
+    expect(response).to be_a(::WebhookUp::Response)
+    expect(response).to be_success
   end
 
   it "handles timeouts", pending: true do
@@ -48,6 +50,9 @@ describe WebhookUp::Client do
       foo: "bar",
     }
 
-    subject.publish("my_event", payload: payload)
+    response = subject.publish("my_event", payload: payload)
+    expect(stub).to have_been_requested
+    expect(response).to be_a(::WebhookUp::Response)
+    expect(response).not_to be_success
   end
 end

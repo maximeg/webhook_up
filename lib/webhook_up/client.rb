@@ -22,7 +22,7 @@ module WebhookUp
 
       delivery_id ||= Digest::SHA1.hexdigest(json_payload)
 
-      connexion.post do |req|
+      response = connexion.post do |req|
         req.headers["X-Hub-Signature"] = signature
         req.headers["X-#{namespaced_header}-Delivery"] = delivery_id
         req.headers["X-#{namespaced_header}-Event"] = event
@@ -30,6 +30,8 @@ module WebhookUp
         req.headers["Content-Type"] = "application/json"
         req.body = json_payload
       end
+
+      Response.new(url, status: response.status, body: response.body, headers: response.headers)
     end
 
     private
