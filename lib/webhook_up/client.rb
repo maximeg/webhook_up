@@ -1,9 +1,18 @@
 # frozen_string_literal: true
 require "faraday"
+require 'securerandom'
 
 module WebhookUp
 
   class Client
+
+    class << self
+
+      def generate_challenge
+        SecureRandom.hex(20)
+      end
+
+    end
 
     def initialize(url, namespace:, secret:)
       @namespace = namespace
@@ -14,6 +23,20 @@ module WebhookUp
     attr_reader :url
 
     def challenge
+      challenge_string = self.class.generate_challenge
+
+      signature = "sha1=" + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), secret, challenge_string)
+
+      response = connexion.get do |req|
+        req.headers["X-Hub-Signature"] = signature
+        req.headers["User-Agent"] = user_agent
+        req.params.merge!({
+          "hub.challenge" => challenge_string,
+          "hub.mode" => "subscribe"
+        })
+      end
+
+      Response.new(url, status: response.status, body: response.body, headers: response.headers)
     end
 
     def publish(event, payload:, delivery_id: nil)
