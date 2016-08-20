@@ -36,7 +36,10 @@ module WebhookUp
         })
       end
 
-      Response.new(url, status: response.status, body: response.body, headers: response.headers)
+      response = Response.new(url, status: response.status, body: response.body, headers: response.headers)
+      success = response.success? && response.body == challenge_string
+
+      Result.new(response: response, success: success)
     end
 
     def publish(event, payload:, delivery_id: nil)
@@ -54,7 +57,9 @@ module WebhookUp
         req.body = json_payload
       end
 
-      Response.new(url, status: response.status, body: response.body, headers: response.headers)
+      response = Response.new(url, status: response.status, body: response.body, headers: response.headers)
+
+      Result.new(response: response, success: response.success?)
     end
 
     private
