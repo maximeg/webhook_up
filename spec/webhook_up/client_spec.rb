@@ -45,7 +45,7 @@ describe WebhookUp::Client do
           )
           .to_return(status: 200, body: "the_challenge", headers: {})
 
-        result = subject.challenge
+        subject.challenge
         expect(stub).to have_been_requested
       end
     end
@@ -126,7 +126,7 @@ describe WebhookUp::Client do
       end
 
       it "returns a successful result" do
-       result = subject.publish("my_event", payload: {
+        result = subject.publish("my_event", payload: {
           foo: "bar",
         })
         expect(result).to be_a(::WebhookUp::Result)
@@ -151,7 +151,7 @@ describe WebhookUp::Client do
       end
 
       it "returns a non successful result" do
-       result = subject.publish("my_event", payload: {
+        result = subject.publish("my_event", payload: {
           foo: "bar",
         })
         expect(result).to be_a(::WebhookUp::Result)
@@ -176,7 +176,7 @@ describe WebhookUp::Client do
       end
 
       it "returns a non successful result" do
-       result = subject.publish("my_event", payload: {
+        result = subject.publish("my_event", payload: {
           foo: "bar",
         })
         expect(result).to be_a(::WebhookUp::Result)

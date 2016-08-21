@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 require "faraday"
-require 'securerandom'
+require "securerandom"
 
 module WebhookUp
 
@@ -25,14 +25,11 @@ module WebhookUp
     def challenge
       challenge_string = self.class.generate_challenge
 
-      signature = "sha1=" + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), secret, challenge_string)
-
-      response = connexion.get do |req|
-        req.headers["X-Hub-Signature"] = signature
-        req.headers["User-Agent"] = user_agent
+      response = request(:get) do |req|
+        req.headers["X-Hub-Signature"] = sign(challenge_string)
         req.params.merge!({
           "hub.challenge" => challenge_string,
-          "hub.mode" => "subscribe"
+          "hub.mode" => "subscribe",
         })
       end
 
@@ -44,15 +41,12 @@ module WebhookUp
 
     def publish(event, payload:, delivery_id: nil)
       json_payload = JSON.dump(payload)
-      signature = "sha1=" + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), secret, json_payload)
-
       delivery_id ||= Digest::SHA1.hexdigest(json_payload)
 
-      response = connexion.post do |req|
-        req.headers["X-Hub-Signature"] = signature
+      response = request(:post) do |req|
+        req.headers["X-Hub-Signature"] = sign(json_payload)
         req.headers["X-#{namespaced_header}-Delivery"] = delivery_id
         req.headers["X-#{namespaced_header}-Event"] = event
-        req.headers["User-Agent"] = user_agent
         req.headers["Content-Type"] = "application/json"
         req.body = json_payload
       end
@@ -76,6 +70,17 @@ module WebhookUp
 
     def namespaced_header
       namespace
+    end
+
+    def request(method)
+      connexion.send(method) do |req|
+        req.headers["User-Agent"] = user_agent
+        yield req
+      end
+    end
+
+    def sign(string)
+      "sha1=" + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), secret, string)
     end
 
     def user_agent

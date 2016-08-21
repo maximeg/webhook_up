@@ -154,8 +154,5 @@ describe WebhookUp::Response do
       subject = described_class.new(url, status: 504)
       expect(subject.success?).to eq(false)
     end
-
-
-
   end
 end
