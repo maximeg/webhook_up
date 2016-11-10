@@ -14,10 +14,11 @@ module WebhookUp
 
     end
 
-    def initialize(url, namespace:, secret:)
+    def initialize(url, namespace:, secret:, proxy: nil)
       @namespace = namespace
       @secret = secret
       @url = url
+      @proxy = proxy
     end
 
     attr_reader :url
@@ -58,10 +59,10 @@ module WebhookUp
 
     private
 
-    attr_reader :namespace, :secret
+    attr_reader :namespace, :proxy, :secret
 
     def connexion
-      @connexion = Faraday.new(url: url) do |faraday|
+      @connexion = Faraday.new(url: url, proxy: proxy) do |faraday|
         # faraday.request  :url_encoded
         # faraday.response :logger
         faraday.adapter Faraday.default_adapter
