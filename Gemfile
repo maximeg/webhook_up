@@ -9,6 +9,3 @@ group :local do
   gem "guard-rspec", require: false
   gem "terminal-notifier-guard", require: false # OS X
 end
-
-# Quality
-gem "rubocop", ">= 0.30", require: false
