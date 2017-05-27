@@ -1,9 +1,9 @@
 # frozen_string_literal: true
+
 require "faraday"
 require "securerandom"
 
 module WebhookUp
-
   class Client
 
     class << self
@@ -26,13 +26,14 @@ module WebhookUp
     def challenge
       challenge_string = self.class.generate_challenge
 
-      response = request(:get) do |req|
-        req.headers["X-Hub-Signature"] = sign(challenge_string)
-        req.params.merge!({
-          "hub.challenge" => challenge_string,
-          "hub.mode" => "subscribe",
-        })
-      end
+      response =
+        request(:get) do |req|
+          req.headers["X-Hub-Signature"] = sign(challenge_string)
+          req.params.merge!({
+            "hub.challenge" => challenge_string,
+            "hub.mode" => "subscribe",
+          })
+        end
 
       response = Response.new(url, status: response.status, body: response.body, headers: response.headers)
       success = response.success? && response.body == challenge_string
@@ -44,13 +45,14 @@ module WebhookUp
       json_payload = JSON.dump(payload)
       delivery_id ||= Digest::SHA1.hexdigest(json_payload)
 
-      response = request(:post) do |req|
-        req.headers["X-Hub-Signature"] = sign(json_payload)
-        req.headers["X-#{namespaced_header}-Delivery"] = delivery_id
-        req.headers["X-#{namespaced_header}-Event"] = event
-        req.headers["Content-Type"] = "application/json"
-        req.body = json_payload
-      end
+      response =
+        request(:post) do |req|
+          req.headers["X-Hub-Signature"] = sign(json_payload)
+          req.headers["X-#{namespaced_header}-Delivery"] = delivery_id
+          req.headers["X-#{namespaced_header}-Event"] = event
+          req.headers["Content-Type"] = "application/json"
+          req.body = json_payload
+        end
 
       response = Response.new(url, status: response.status, body: response.body, headers: response.headers)
 
@@ -62,11 +64,12 @@ module WebhookUp
     attr_reader :namespace, :proxy, :secret
 
     def connexion
-      @connexion = Faraday.new(url: url, proxy: proxy) do |faraday|
-        # faraday.request  :url_encoded
-        # faraday.response :logger
-        faraday.adapter Faraday.default_adapter
-      end
+      @connexion =
+        Faraday.new(url: url, proxy: proxy) do |faraday|
+          # faraday.request  :url_encoded
+          # faraday.response :logger
+          faraday.adapter(Faraday.default_adapter)
+        end
     end
 
     def namespaced_header
@@ -76,7 +79,7 @@ module WebhookUp
     def request(method)
       connexion.send(method) do |req|
         req.headers["User-Agent"] = user_agent
-        yield req
+        yield(req)
       end
     end
 
@@ -89,5 +92,4 @@ module WebhookUp
     end
 
   end
-
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe WebhookUp::Client do
@@ -126,9 +127,11 @@ RSpec.describe WebhookUp::Client do
       end
 
       it "returns a successful result" do
-        result = subject.publish("my_event", payload: {
-          foo: "bar",
-        })
+        result = subject.publish(
+          "my_event", payload: {
+            foo: "bar",
+          }
+        )
         expect(result).to be_a(::WebhookUp::Result)
         expect(result).to be_success
       end
@@ -151,9 +154,11 @@ RSpec.describe WebhookUp::Client do
       end
 
       it "returns a non successful result" do
-        result = subject.publish("my_event", payload: {
-          foo: "bar",
-        })
+        result = subject.publish(
+          "my_event", payload: {
+            foo: "bar",
+          }
+        )
         expect(result).to be_a(::WebhookUp::Result)
         expect(result).not_to be_success
       end
@@ -176,9 +181,11 @@ RSpec.describe WebhookUp::Client do
       end
 
       it "returns a non successful result" do
-        result = subject.publish("my_event", payload: {
-          foo: "bar",
-        })
+        result = subject.publish(
+          "my_event", payload: {
+            foo: "bar",
+          }
+        )
         expect(result).to be_a(::WebhookUp::Result)
         expect(result).not_to be_success
       end

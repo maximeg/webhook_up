@@ -1,8 +1,8 @@
 # frozen_string_literal: true
+
 require "faraday"
 
 module WebhookUp
-
   class Result
 
     def initialize(response:, success:)
@@ -17,5 +17,4 @@ module WebhookUp
     end
 
   end
-
 end
