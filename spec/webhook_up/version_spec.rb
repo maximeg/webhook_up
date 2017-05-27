@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe "WebhookUp::VERSION" do
+RSpec.describe "WebhookUp::VERSION" do
   subject { WebhookUp::VERSION }
 
   it "exists" do

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require "spec_helper"
 
-describe WebhookUp::Client do
+RSpec.describe WebhookUp::Client do
   let(:namespace) { "MyService" }
   let(:secret) { "abc123" }
   let(:url) { "https://my.example.com/webhooks" }

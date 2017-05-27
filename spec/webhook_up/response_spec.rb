@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require "spec_helper"
 
-describe WebhookUp::Response do
+RSpec.describe WebhookUp::Response do
   let(:url) { "https://my.example.com/webhooks" }
 
   describe "#success?" do
