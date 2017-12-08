@@ -2,6 +2,7 @@
 
 require "faraday"
 require "securerandom"
+require "webhook_up/error"
 
 module WebhookUp
   class Client
@@ -81,6 +82,8 @@ module WebhookUp
         req.headers["User-Agent"] = user_agent
         yield(req)
       end
+    rescue Faraday::ConnectionFailed => e
+      raise ::WebhookUp::ConnectionFailed, e.message
     end
 
     def sign(string)
